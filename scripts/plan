@@ -1,0 +1,131 @@
+Tuesday---do button click event
+
+*did all in *database.js
+-will constain all the state in the application
+-needs to contain empty object of orderBuilder that will hold temporary state
+-needs to contains arrays of: colors, seats, techOptions, wheels
+-create and export getters: getColors, getSeats, getOptions, getWheels
+for example: 
+export const getColors = () => {
+    return database.colors.map(color => ({...color}))
+}
+-create and export setters: setColors, setSeats, setOptions, setWheels 
+for example:
+export const setColor = (id) => {
+database.orderBuilder.ColorId = id
+}
+//this function sets the color property in the temporary orderBuilder object
+-create and export a function that will change temporary state stored in orderBuilder and change it to permenant state. Use example from KneelDiamonds
+
+
+
+main.js
+*-will import a cars-r-us module (that will contain a function that combines all html representation )
+*-will create a const of mainContainer = document.querySelector("#container") //this attaches to the index.html component with the id of container
+*-creates a const renderAllHTML()- it should display all the inner HTML of the cars-r-us module
+for example:
+mainContainer.innerHTML = CarsRUs() //CarsRUs() was created in CarsRUs modules
+-add an event listener of stateChanged. its a custom event. 
+for example: 
+document.addEventListener("stateChanged", event => {
+    console.log("State of data has changed. Regenerating HTML...")
+    renderAllHTML()
+})
+
+
+
+* did all in *index.html
+-will set the !doctype to html. copy from kneel-diamonds
+-references the stylesheet and scripts.main.js
+-in <body> sets the id="container" in <main>
+
+
+
+* did all *Cars-R-Us.js
+-create a const CarsRUs() that will return the HTML of the web page
+for example:
+<h1>Cars</h1>
+<article class="colors">
+<section class="choices_color choices">
+<h2>Colors</h2>
+${Colors()} //This function would create html of all color options
+</section>
+repeat for other sections. </article>
+-use kneel diamonds as an example
+-add order button html and set id
+-add order function and set customOrder class
+
+
+*completed
+Colors.js
+-import getColors and setColors from database
+-set a const of colors to getColors()
+-add an eventListener---will need example code from book, I think. This will be the drop down menu?
+document.addEventListener(
+    "change",
+    (event) => {
+        if (event.target.name === "metal") {
+            setMetal(parseInt(event.target.value))
+        }
+    }
+)
+-create and export a Colors function that will create html representation of the color options. //This is where we set the html element to the drop down menu type. 
+return html
+}
+
+
+*Completed
+Seats.js
+Options.js
+Wheels.js
+-do the same for these modules
+
+
+
+
+* done with *Orders.js
+-import getOrders, getColors, getSeats, getOptions, and getWheels from "./database.js"
+-set const for colors= getColors(), etc.
+
+-create a function that builds a list of orders and creates its html representation
+-it will take an order (orderObject) as a parameter
+-for example: 
+const buildOrderListItem = (order) => {
+
+//this line filters metal of metals. find the metal.id (orderObject.id) that equals order.metalID and return it. Do this for colors, seats, options, and wheels.
+    const foundMetal = metals.find(
+        (metal) => {
+               return metal.id === order.metalId 
+        }  
+    )
+    let totalCost = foundMetal.price + foundStyle.price + foundSize.price
+        const costString = totalCost.toLocaleString("en-US", {
+        style: "currency",
+        currency: "USD"
+    })
+    //found sizes and found styles. define them, then add them to totalCost
+//the code below uses string interpolation to make a string of the text we want to appear for each order
+    return `<li>
+        order #${order.id} was placed on ${order.timestamp} and costs ${costString}.
+
+    </li>`
+
+-Now, create a function that invokes the function above. No parameter. 
+For example:
+export const Orders = () => {
+    const orders = getOrders()
+
+    let html = "<ul>"
+
+    const listItems = orders.map(buildOrderListItem) //buildOrderList does not need a parameter bc the .map method implies an argument. It is like saying for order of orders.map. 
+
+    html += listItems.join("")
+    html += "</ul>"
+
+    return html
+}
+
+
+
+*done* index.css and main.css
+-copy from KneelDiamonds
